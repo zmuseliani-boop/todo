@@ -741,6 +741,32 @@
   }
   .tools button:hover { color: var(--text); }
   .tools .spacer { flex: 1; }
+  .sync-status.is-ok { color: var(--accent); }
+  .sync-status.is-off { color: var(--danger); }
+
+  .modal {
+    position: fixed; inset: 0; z-index: 90; background: rgba(0,0,0,0.45);
+    display: flex; align-items: center; justify-content: center; padding: 16px;
+  }
+  .modal-card {
+    width: 100%; max-width: 440px; max-height: 85vh; overflow: auto;
+    background: var(--surface); color: var(--text); border: 1px solid var(--border);
+    border-radius: 14px; box-shadow: var(--shadow); padding: 18px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .modal-card h2 { font-family: "Fraunces", Georgia, serif; font-size: 1.25rem; margin: 0; }
+  .modal-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .modal-actions button, .backup-row button {
+    padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border);
+    background: var(--accent); color: var(--accent-contrast); border-color: transparent;
+    font-family: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+  }
+  .modal-actions button.btn-ghost { background: transparent; border-color: var(--border); color: var(--text-muted); }
+  .modal-actions button:disabled { opacity: 0.5; }
+  .backup-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 9px 0; border-top: 1px solid var(--border); font-size: 0.86rem;
+  }
 
 </style>
 </head>
@@ -799,8 +825,10 @@
   <div class="tools">
     <button type="button" id="export-btn">ექსპორტი</button>
     <button type="button" id="import-btn">იმპორტი</button>
+    <button type="button" id="backup-btn">სარეზერვო ასლები</button>
     <input type="file" id="import-file" accept="application/json,.json" hidden />
     <span class="spacer"></span>
+    <span id="sync-status" class="sync-status"></span>
     <span id="user-email"></span>
     <button type="button" id="signout-btn">გასვლა</button>
   </div>
@@ -825,6 +853,19 @@
     </div>
     <p id="auth-error" class="auth-error" hidden></p>
   </form>
+</div>
+
+
+<div id="backup-modal" class="modal" hidden>
+  <div class="modal-card">
+    <h2>სარეზერვო ასლები</h2>
+    <p id="backup-info" class="subtitle" style="margin:0;"></p>
+    <div class="modal-actions">
+      <button type="button" id="backup-now">ახლავე შენახვა</button>
+      <button type="button" id="backup-close" class="btn-ghost">დახურვა</button>
+    </div>
+    <div id="backup-list"></div>
+  </div>
 </div>
 
 <script src="firebase-config.js"></script>
