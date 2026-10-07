@@ -1,5 +1,5 @@
 // Offline support: the app shell is cached; data sync/offline storage is handled by Firestore itself.
-const CACHE = "todo-shell-v3";
+const CACHE = "todo-shell-v4";
 const SHELL = ["./", "index.html", "app.js", "firebase-config.js", "manifest.json", "icons/icon-192.png", "icons/icon-512.png"];
 
 self.addEventListener("install", (e) => {
